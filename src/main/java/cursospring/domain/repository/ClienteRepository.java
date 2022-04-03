@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 // JpaRepository => ela possui as funcinalidades para a gente poder criar, cunsultar... as entidade no banco
-/* Essa notação indica que a classe é um componente do repository spring que gerencia as instancia da classe, assim eu não precisa criar uma implementação dessa interface o spring faz isso automaticamente, basta apenas usar a notação @Autowired onde eu for declar ou passar pelo contrutor */
+/* Essa notação indica que a classe é um componente do repository spring que gerencia as instancia da classe, assim eu não preciso criar uma implementação dessa interface, o spring faz isso automaticamente, basta apenas usar a notação @Autowired onde eu for declar ou passar pelo contrutor */
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
@@ -16,4 +17,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     // quando quisermos uma implementação com like usamos Containing
     List<Cliente> findByNomeContaining(String nome);
+
+    Optional<Cliente> findByEmail(String email);
 }

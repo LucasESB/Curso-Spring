@@ -2,6 +2,7 @@ package cursospring.api.controller;
 
 import cursospring.domain.model.Cliente;
 import cursospring.domain.repository.ClienteRepository;
+import cursospring.domain.service.CatalogoClienteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ClienteController {
 
     private ClienteRepository clienteRepository;
+    private CatalogoClienteService catalogoClienteService;
 
     @GetMapping
     public List<Cliente> listar() {
@@ -43,7 +45,7 @@ public class ClienteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // informa qual o status http de retorno neste caso o 201
     public Cliente inserir(@Valid @RequestBody Cliente cliente) { // A notação @RequestBodyvincula o corpo da requisição a variavel cliente
-        return clienteRepository.save(cliente);
+        return catalogoClienteService.salvar(cliente);
     }
 
     @PutMapping("/{clienteId}")
@@ -53,7 +55,7 @@ public class ClienteController {
         }
 
         cliente.setId(clienteId);
-        cliente = clienteRepository.save(cliente);
+        cliente = catalogoClienteService.salvar(cliente);
 
         return ResponseEntity.ok(cliente);
     }
@@ -64,7 +66,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
 
-        clienteRepository.deleteById(clienteId);
+        catalogoClienteService.excluir(clienteId);
         return ResponseEntity.noContent().build(); // coidgo 204 usado quando não é retornado nada no corpo da ResponseStatus
     }
 }

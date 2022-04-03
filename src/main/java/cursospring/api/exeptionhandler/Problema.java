@@ -1,5 +1,6 @@
 package cursospring.api.exeptionhandler;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL) //Essa notação indica que no json dessa classe será reprensetado somente os atributos não nulos
 @Getter
 @Setter
 public class Problema {

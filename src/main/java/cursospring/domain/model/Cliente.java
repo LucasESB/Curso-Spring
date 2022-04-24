@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity // Informa para que esta classe é uma entidade no banco de dados para o JPA
-
 /* @Table(name = "tb_cliente") caso o nome da tabela no banco seja diferente da classe */
 public class Cliente {
 
@@ -26,7 +25,7 @@ public class Cliente {
 
     @Column
 //    @Column(name = "nome_cliente") caso o nome da coluna no banco seja diferente posso usar o campo nome para especificar
-    @NotBlank // Indica que o valor dessa propriedade não pode ser vazia e nem nula, Para usar essa notção é necessario usar o Spring Boot start validation
+    @NotBlank /* Indica que o valor dessa propriedade não pode ser vazia e nem nula, Para usar essa notção é necessario usar o Spring Boot start validation */
     @Size(max = 60)
     private String nome;
 

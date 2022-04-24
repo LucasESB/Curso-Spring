@@ -1,5 +1,6 @@
 package cursospring.api.exeptionhandler;
 
+import cursospring.domain.exception.EntidadeNaoEncontradaException;
 import cursospring.domain.exception.NegocioException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -16,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problema problema = new Problema();
         problema.setStatus(status.value());
-        problema.setDataHora(LocalDateTime.now());
+        problema.setDataHora(OffsetDateTime.now());
         problema.setTitulo("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
         problema.setCampos(campos);
 
@@ -54,7 +56,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problema problema = new Problema();
         problema.setStatus(status.value());
-        problema.setDataHora(LocalDateTime.now());
+        problema.setDataHora(OffsetDateTime.now());
+        problema.setTitulo(ex.getMessage());
+
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class) /*Com essa notação quando a exceção passada pelo parenteses for lançada em qualquer parte da aplicação, esse metodo será responsavel por trata-la*/
+    public ResponseEntity<Object> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        Problema problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setDataHora(OffsetDateTime.now());
         problema.setTitulo(ex.getMessage());
 
         return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);

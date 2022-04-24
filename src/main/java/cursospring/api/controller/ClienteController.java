@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor // gera um construtor com todas propriedades da classe
-@RestController
+@RestController // Indica que a classe é um controlador de requisição do componete Spring
 @RequestMapping("/clientes") // define a rota da classe
 public class ClienteController {
 

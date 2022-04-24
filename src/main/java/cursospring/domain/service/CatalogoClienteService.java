@@ -8,16 +8,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-@Service //Essa notção torna a classe um componente do Spring porem com uma semantica de Serviço
-//Esta classe serve para centralizar as regras de negocio
+@Service //Essa notação torna a classe um componente do Spring porem com uma semantica de Serviço
+//Esta classe serve para centralizar as regras de negocio, cada classe é um caso de uso, por exemplo: CRUD, Bloqueio de clientes
 public class CatalogoClienteService {
 
     private ClienteRepository clienteRepository;
 
+    public Cliente buscar(Long clienteId){
+        return clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new NegocioException("Cliente não encontrado"));
+    }
+
     /*Essa notação indica que esse metodo deve ser executado dentro de uma transação, se algo dentro desse metodo der errado todas operações dentro dessa transação não vão ser executadas */
     @Transactional
     public Cliente salvar(Cliente cliente) {
-        //Em cada metodo posso implementar alguma validação caso seja necessario
+        //Em cada metodo posso implementar alguma validação caso seja necessario, também poderia criar um pacote Rules e criar minhas validações
 
 //        boolean emaulEmUso = clienteRepository.findByEmail(cliente.getEmail())
 //                .stream()

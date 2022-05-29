@@ -1,5 +1,6 @@
 package cursospring.domain.model;
 
+import cursospring.domain.exception.NegocioException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +39,7 @@ public class Entrega {
     private OffsetDateTime dataFinalizacao;
 
     @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL) /* Esta notação indica que há um relacionamento entre a entidade Entrega e a entidade Ocorrencia do tipo de 1 para muitos, no mappedBy indica o nome da propriedade que tem o relacionamento inverso o @ManyToOne, o cascade indica que quando ouver alguma alteração na lista essa alteração será persistida no banco de dados */
-    private List<Ocorrencia> ocorrencias =  new ArrayList<>();
+    private List<Ocorrencia> ocorrencias = new ArrayList<>();
 
     public Ocorrencia adicionarOcorrencia(String descricao) {
         Ocorrencia ocorrencia = new Ocorrencia();
@@ -49,5 +50,22 @@ public class Entrega {
         this.getOcorrencias().add(ocorrencia);
 
         return ocorrencia;
+    }
+
+    public void finalizar() {
+        if (naoPodeSerFinalizada()) {
+            throw new NegocioException("Entrega não pode ser finalizada.");
+        }
+
+        this.setStatus(StatusEntrega.FINALIZADA);
+        this.setDataFinalizacao(OffsetDateTime.now());
+    }
+
+    public boolean podeSerFinalizada(){
+        return this.getStatus().equals(StatusEntrega.PENDENTE);
+    }
+
+    public boolean naoPodeSerFinalizada(){
+        return !podeSerFinalizada();
     }
 }

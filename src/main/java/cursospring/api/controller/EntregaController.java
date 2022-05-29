@@ -5,6 +5,7 @@ import cursospring.api.model.EntregaModel;
 import cursospring.assembler.EntregaAssembler;
 import cursospring.domain.model.Entrega;
 import cursospring.domain.repository.EntregaRepository;
+import cursospring.domain.service.FinalizacaoEntregaService;
 import cursospring.domain.service.SolicitaEntregaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class EntregaController {
     private EntregaRepository entregaRepository;
     private SolicitaEntregaService solicitaEntregaService;
     private EntregaAssembler entregaAssembler; // serve para realizar os mapeamentos de objetos e conversão de uma camada para outra
+    private FinalizacaoEntregaService finalizacaoEntregaService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,5 +42,11 @@ public class EntregaController {
         return entregaRepository.findById(clienteId)
                 .map(entrega -> ResponseEntity.ok(entregaAssembler.toModel(entrega)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{entregaId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT) // NO_CONTENT => Significa que a requisição foi executado com sucesso porém não foi retornado nada
+    public void finalizacao(@PathVariable Long entregaId){
+        finalizacaoEntregaService.finalizar(entregaId);
     }
 }
